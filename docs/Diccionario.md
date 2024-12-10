@@ -703,6 +703,103 @@ Sé que hay otras páginas del inmet, les pido que me ayuden a buscarlas.
 - **¿Qué soporte técnico está disponible para resolver problemas?**  
   Documentación oficial, foros de usuarios, y soporte comunitario.
 
+## **Fuente de Datos: International Research institute [IRI](https://iridl.ldeo.columbia.edu/)**
+
+La Biblioteca de Datos del IRI es un almacén de datos disponible libremente en línea. Permite hacer búsquedas por la fuente de los datos, por categoría (aunque está habilitado en la página en lo personal no me permite realizar esta búsqueda, pero seria muy útil) y por mapas organizados por palabras clave. La biblioteca cuenta con un visualizador de datos incorporado. 
+La base de datos evaluada es la base ENACTS_V1 Y ENACTS_V2. Son tablas consolidadas para temperatura y precipitación con datos diarios consolidados de las siguientes estaciones:
+Temperatura: Stations from IDEAM + MERRA2
+Precipitación: Stations from IDEAM + CHIRPS
+
+
+### **1. Disponibilidad y Acceso**
+
+- **¿Tiene información de lluvias (precipitación), fuertes lluvias?**
+  Si, los datos cuentan con información de precipitaciones diarias.
+- **¿Tiene información de vientos, velocidad del viento, rafagas de viento?**
+  No.
+- **¿Tiene información de temperaturas máximas, mínimas, promedio, datos de temperatura horaria?**
+  Si, cuenta con histórico de temperatura máxima, promedio y mínima. 
+- **¿Tiene acceso libre?**
+  Si
+- **¿Desde cuándo hay datos?**
+  Temperatura: 1981-2020
+  Precipitaciones: 1981-2016
+- **¿Necesitamos un permiso especial?**
+  No
+- **¿Cómo se puede acceder a los datos?**
+  A través de DODS o en formato netCDF
+- **¿Podemos crear una automatización para la descarga de los datos?**
+  Si, a través de OPeNDAP se puede realizar la descarga directamente de software como Matlab o Python. A través de algunas librerías de python se puede leer a        través de netCDF
+- **¿Cuál es la frecuencia de actualización de los datos?**
+  Temperatura: Última Actualización: Wed, 19 Apr 2023 18:23:12 GMT
+  Precipitación: Última Actualización: Thu, 20 Jan 2022 14:33:50 GMT
+
+- **¿En qué formato están disponibles los datos?**
+  DODS, netCDF
+  Para algunos programas específicos: Ingrid, CPT, ferret, GrADS, matlab, NCL-NCAR, WinDisp
+
+- **¿Existen restricciones geográficas en el acceso?**
+  Al ser una base de datos consolidada las coordenadas donde se consolidan las series son:
+Longitude (longitude)	grid: /X (degree_east) ordered (80W) to (65W) by 0.1 N= 151 pts :grid
+Latitude (latitude)	grid: /Y (degree_north) ordered (5S) to (15N) by 0.1 N= 201 pts :grid
+
+
+### **2. Calidad y Estandarización**
+- **¿Qué nivel de resolución espacial tienen los datos?**
+  0.1 x 0.1
+- **¿Qué nivel de resolución temporal tienen los datos?**
+  Diaria
+- **¿Los datos han sido sometidos a algún proceso de limpieza o validación?**
+  Las series están consolidadas de dos estaciones antes descritas, lo que indica un posible proceso de limpieza y validación 
+- **¿Incluyen metadatos detallados y consistentes?**
+  Si
+
+### **3. Contenido de los Datos**
+- **¿Qué variables están disponibles (temperatura, precipitación, viento, etc.)?**
+  Temperatura: (Celsius_scale) [ Longitude Latitude Time ]
+  Precipitación: (mm) [ Longitude Latitude Time ]
+
+- **¿Los datos incluyen mediciones históricas, simulaciones o ambos?**
+  No incluyen mediciones o simulacines
+  
+- **¿Existen variables derivadas (índices climáticos, anomalías, etc.)?**
+  No se identifican variales derivadas
+
+### **4. Uso y Licencia**
+- **¿Qué tipo de licencia tienen los datos (libre, restringida, comercial)?**
+  Libre
+- **¿Existe un límite en la cantidad de datos que se pueden descargar?**
+  En una version premilimar no se identifica un limite a la cantidad de datos a descargar 
+- **¿Se requiere atribuir la fuente en caso de uso?**
+  Es es una práctica estándar en el uso de datos provenientes de instituciones académicas o científicas, ya que ayuda a reconocer su trabajo y mantener la transparencia en el uso de los datos.
+- **¿Es posible redistribuir los datos o integrarlos en nuevos productos?**
+  No parece tener el soporte adecuado para ese fin
+
+### **5. Automatización y Escalabilidad**
+- **¿Los datos están disponibles a través de APIs?**
+  No es necesaria una API para la descarga de los datos
+- **¿Existen restricciones en la velocidad o volumen de solicitudes para la descarga automatizada?**
+  En una revisión preliminar no parecen haber restricciones al volumen de descarga. No logro identificar si existen restricciones a la velocidad de descarga 
+- **¿Qué herramientas o lenguajes son compatibles con el acceso a los datos (Python, R, etc.)?**
+  Python, Matlab o cualquier lenguaje que soporte NetCDF.
+
+### **6. Contexto y la Institución**
+- **¿Quién es la entidad responsable de los datos?**
+  Bases consolidadas por el IRI de las estaciones del IDEAM, CHIRPS Y MERRA2
+- **¿Cuál es la reputación de la fuente en términos de calidad y fiabilidad?**
+  El IRI hace parte del Earth Institute de la Universidad de Columbia y tiene una sólida reputación internacional como una de las principales instituciones en investigación climática y servicios climáticos. Trabaja estrechamente con organizaciones como la Organización Meteorológica Mundial (OMM), el Programa Mundial de Investigación del Clima (WCRP) o el Banco Mundial 
+- **¿Hay documentación técnica detallada para entender los datos?**
+  Cuenta con una descripción de los datos y un visualizador de la serie 
+
+### **7. Usabilidad**
+- **¿Es necesario transformar los datos para adaptarlos a los objetivos del proyecto?**
+  En una revisión preliminar la información parece no necesitar ninguna transformación
+- **¿Qué tan fácil es integrar los datos con otras fuentes?**
+  La base de datos parece estar en formatos comunes, lo que permite integración con otras fuentes de datos
+- **¿Qué soporte técnico está disponible para resolver problemas?**
+  La biblioteca de datos cuenta con una sección de Ayuda y Recursos que incluye tutoriales básicos y estadísticos, la documentación de las funciones, y otros recursos que permiten explotar la Biblioteca de Datos.
+
+
 ## **Fuente de Datos: [Nombre de la Fuente]**
 
 *(Repetir la estructura anterior para cada fuente de datos)*
