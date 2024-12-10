@@ -715,19 +715,26 @@ Precipitación: Stations from IDEAM + CHIRPS
 
 - **¿Tiene información de lluvias (precipitación), fuertes lluvias?**
   Si, los datos cuentan con información de precipitaciones diarias.
+  
 - **¿Tiene información de vientos, velocidad del viento, rafagas de viento?**
   No.
+  
 - **¿Tiene información de temperaturas máximas, mínimas, promedio, datos de temperatura horaria?**
-  Si, cuenta con histórico de temperatura máxima, promedio y mínima. 
+  Si, cuenta con histórico de temperatura máxima, promedio y mínima.
+  
 - **¿Tiene acceso libre?**
   Si
+  
 - **¿Desde cuándo hay datos?**
   Temperatura: 1981-2020
   Precipitaciones: 1981-2016
+  
 - **¿Necesitamos un permiso especial?**
   No
+  
 - **¿Cómo se puede acceder a los datos?**
   A través de DODS o en formato netCDF
+  
 - **¿Podemos crear una automatización para la descarga de los datos?**
   Si, a través de OPeNDAP se puede realizar la descarga directamente de software como Matlab o Python. A través de algunas librerías de python se puede leer a        través de netCDF
 - **¿Cuál es la frecuencia de actualización de los datos?**
