@@ -10,10 +10,16 @@ Contiene los Jupyter notebooks para explorar datos y documentar el flujo de trab
 Código fuente organizado en scripts y utilidades reutilizables.
 
 #### Descargar datos
-Para descargar los datos, se debe ejecutar el script `ecmwf_descarga.py` ubicado en la carpeta `src/scripts`. Este script descarga los datos de la página web del ECMWF y los almacena en la carpeta `data/raw/era5`.
+Para descargar los datos, se debe ejecutar el script `descargar_datos.py` que invoca la función `ecmwf_descarga.py` ubicado en la carpeta `src/scripts`. Este script descarga los datos de la página web del ECMWF y los almacena en la carpeta `data/raw/era5`.
 
 #### Unir los datos
 Para unir los datos descargados, se debe ejecutar el script `unir_archivos.py` ubicado en la carpeta `src/scripts`. Este script une los datos descargados y los almacena en la carpeta `data/processed`.
+
+#### Calcular los percentiles
+Para calcular los percentiles de los datos unidos, se debe ejecutar el script `calcular_percentil.py` ubicado en la carpeta `src/scripts`. Este script calcula los percentiles de los datos unidos y los almacena en la carpeta `data/processed`.
+
+#### Calcular anomalías
+Para calcular las anomalías de los datos unidos, se debe ejecutar el script `calcular_anomalias.py` ubicado en la carpeta `src/scripts`. Este script calcula las anomalías de los datos unidos y los almacena en la carpeta `data/processed`.
 
 ### `docs/`
 Documentación importante del proyecto, como metodología y resultados.

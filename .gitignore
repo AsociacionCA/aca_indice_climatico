@@ -1,7 +1,13 @@
 # Ignorar los archivos descargados
 data/indices/*
 data/processed/*
-data/raw/*
+
+# Ignorar los archivos descargados
+data/raw/era5/*
+!data/raw/era5/.gitkeep
+data/raw/processed/*
+!data/raw/processed/.gitkeep
+
 data/zones/*
 
 # Ignorar los archivos de ambiente de python
