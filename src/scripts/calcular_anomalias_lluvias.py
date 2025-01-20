@@ -3,6 +3,7 @@ import xarray as xr
 
 def load_grid_data(file_path, year, month, variable):
     """Load grid data for a specific year, month, and variable."""
+    #{month:02}: Ensures the month is zero-padded to 2 digits (e.g., 01 for January, 12 for December).
     grid_data = xr.open_dataset(file_path, engine='cfgrib')[variable].sel(time=f"{year}-{month:02}")
     return grid_data    
 
@@ -31,7 +32,7 @@ def create_anomalies_dataset(variables, attrs):
 def main():
     # File paths and configuration
     ruta_datos_grib = "../../data/raw/era5/"
-    file = 'file1.grib'
+    file = 'era5_rain_union.nc'
     archivo_comparar = os.path.join(ruta_datos_grib, file)
     ruta_datos_maximos = "../../data/processed"
     datos_precipitacion_archivo = "file2.nc"
