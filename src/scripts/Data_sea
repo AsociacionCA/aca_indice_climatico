@@ -1,0 +1,35 @@
+def descargar_datos(urls):
+    """
+    Función para descargar y procesar datos de series temporales desde URLs especificadas
+    
+    Args:
+        urls (dict): Diccionario con nombres de estaciones y URLs de descarga
+    
+    Returns:
+        dict: Diccionario con DataFrames de pandas con los datos procesados
+    """
+    dataframes = {}
+    
+    for estacion, url in urls.items():
+        try:
+            # Descargar datos
+            response = requests.get(url)
+            response.raise_for_status()  # Lanza error para respuestas no exitosas
+            
+            # Procesar datos crudos
+            data = pd.read_csv(io.StringIO(response.text), sep=';', header=None)
+            data = data.iloc[:, :4]
+            data.columns = ["Year", "Value_mm", "Flag1", "Flag2"]
+            
+            dataframes[estacion] = data
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error de conexión en {estacion}: {str(e)}")
+        except pd.errors.EmptyDataError:
+            print(f"Error: Archivo vacío en {estacion}")
+        except pd.errors.ParserError:
+            print(f"Error de formato en {estacion}")
+        except Exception as e:
+            print(f"Error inesperado en {estacion}: {str(e)}")
+    
+    return dataframes
