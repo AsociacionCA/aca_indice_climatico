@@ -128,7 +128,7 @@ for estacion, df in dataframes.items():
     
     # Aplicar Mann-Kendall siempre como método principal
     trend_test = mk.original_test(data)
-    print(f"📊 Método Mann-Kendall:")
+    print(f" Método Mann-Kendall:")
     print(f"Tendencia: {trend_test.trend}")
     print(f"P-valor: {trend_test.p:.4f}")
     print(f"Tau de Kendall: {trend_test.Tau:.4f}")
@@ -137,11 +137,11 @@ for estacion, df in dataframes.items():
     if normalidad[estacion]:
         x = np.arange(len(data))
         slope, _, r_value, p_value, _ = linregress(x, data)
-        print("\n📈 Regresión Lineal (Datos normales):")
+        print("\n Regresión Lineal (Datos normales):")
         print(f"Pendiente: {slope:.4f} mm/año")
         print(f"P-valor: {p_value:.4f}")
         print(f"R²: {r_value**2:.4f}")
     else:
-        print("\n📉 Solo método no paramétrico (datos no normales)")
+        print("\n Solo método no paramétrico (datos no normales)")
     
     print("-" * 50)
