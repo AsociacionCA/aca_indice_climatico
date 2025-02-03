@@ -52,10 +52,13 @@ def resample_to_daily_precipitation(grid_data):
     grid_data['valid_time'] = grid_data['valid_time'] - pd.Timedelta(hours=5)
 
     #aplanar el grid_data combinando 'time' y 'step'
-    grid_data = grid_data.stack(valid_time_dim=("time", "step")).reset_index("valid_time_dim")
+    grid_data_plain = grid_data.stack(valid_time_dim=("time", "step")).reset_index("valid_time_dim")
 
     #suma de precipitacion diaria por dia
-    daily_sum = grid_data.groupby(grid_data["valid_time"].dt.floor("D")).sum(dim='valid_time_dim')
+    daily_sum = grid_data_plain.groupby(grid_data_plain["valid_time"].dt.floor("D")).sum(dim='valid_time_dim')
+
+    # Renombrar la variable floor
+    daily_sum = daily_sum.rename({"floor": "time"})
 
     return daily_sum
 
@@ -156,26 +159,26 @@ if __name__ == "__main__":
     ### Merge all yearly files into one
     ##merge_yearly_files(output_dir_tmp, merged_file, variable_tmp)
 
-    ##### rain
-    ##input_dir_rain = "../../data/raw/era5"
-    ##output_dir_rain = "../../data/processed/daily_by_year_rain"
-    ##merged_file_rain = "../../data/processed/era5_daily_combined_rain.nc"
-    ##variable_rain = "tp"
+    ### rain
+    input_dir_rain = "../../data/raw/era5"
+    output_dir_rain = "../../data/processed/daily_by_year_rain"
+    merged_file_rain = "../../data/processed/era5_daily_combined_rain.nc"
+    variable_rain = "tp"
 
-    ### Process each year
-    ##for year in range(1960, 1991):  # Adjust year range as needed
-    ##    file_path = os.path.join(input_dir_rain, f"era5_rain_{year}.grib")
-    ##    if os.path.exists(file_path):
-    ##        process_yearly_precipitation_data(file_path, year, variable_rain, output_dir_rain)
+    # Process each year
+    for year in range(1960, 1991):  # Adjust year range as needed
+        file_path = os.path.join(input_dir_rain, f"era5_rain_{year}.grib")
+        if os.path.exists(file_path):
+            process_yearly_precipitation_data(file_path, year, variable_rain, output_dir_rain)
 
-    ### Merge all yearly files into one
-    ##merge_yearly_files(output_dir_rain, merged_file_rain, variable_rain)
+    # Merge all yearly files into one
+    merge_yearly_files(output_dir_rain, merged_file_rain, variable_rain)
     
-    ##### wind
-    input_dir_wind = "../../data/raw/era5"
-    output_dir_wind = "../../data/processed/daily_by_year_wind"
-    merged_file_wind = "../../data/processed/era5_daily_combined_wind.nc"
-    variable_wind = ['u10', 'v10']
+    ####### wind
+    ##input_dir_wind = "../../data/raw/era5"
+    ##output_dir_wind = "../../data/processed/daily_by_year_wind"
+    ##merged_file_wind = "../../data/processed/era5_daily_combined_wind.nc"
+    ##variable_wind = ['u10', 'v10']
 
     #### Process each year
     ##for year in range(1960, 1991):  # Adjust year range as needed

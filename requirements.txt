@@ -1,3 +1,4 @@
+affine==2.4.0
 attrs==24.2.0
 cdsapi==0.7.5
 certifi==2024.8.30
@@ -6,9 +7,12 @@ cfgrib==0.9.14.1
 cftime==1.6.4.post1
 charset-normalizer==3.4.0
 click==8.1.7
+click-plugins==1.1.1
+cligj==0.7.2
 datapi==0.1.1
 eccodes==2.39.1
 findlibs==0.0.5
+geopandas==1.0.1
 idna==3.10
 multiurl==0.3.3
 netCDF4==1.7.2
@@ -16,9 +20,15 @@ numpy==2.2.0
 packaging==24.2
 pandas==2.2.3
 pycparser==2.22
+pyogrio==0.10.0
+pyparsing==3.2.1
+pyproj==3.7.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
+rasterio==1.4.3
 requests==2.32.3
+rioxarray==0.18.2
+shapely==2.0.6
 six==1.17.0
 tqdm==4.67.1
 typing_extensions==4.12.2
