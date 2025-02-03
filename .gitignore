@@ -21,3 +21,6 @@ src/config.py
 
 # Ignorar los archivos del cahce de python
 src/scripts/__pycache__/
+
+# Ignorar los archivos temporales de excel
+*.~*
