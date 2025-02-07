@@ -35,3 +35,5 @@ typing_extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
 xarray==2024.11.0
+matplotlib==3.10.0
+seaborn==0.13.2
