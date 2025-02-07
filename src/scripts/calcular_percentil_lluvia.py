@@ -4,6 +4,7 @@ import os
 import numpy as np
 import rioxarray as rio
 import geopandas as gpd
+import pdb
 
 def calcular_estadisticas(data):
     """
@@ -16,6 +17,7 @@ def calcular_estadisticas(data):
     - mean_tp (xarray.DataArray): Media mensual de los datos.
     - std_tp (xarray.DataArray): Desviación estándar mensual de los datos.
     """
+    pdb.set_trace()
     mean_tp = data.groupby('time.month').mean(dim='time')  #calcula la media mensual
     std_tp = data.groupby('time.month').std(dim='time')    #calcula la desviación estándar mensual
     
@@ -38,23 +40,6 @@ def guardar_estadisticas(data, archivo_salida, validador = None):
         subset = data[['mean_tp','std_tp']].to_dataframe().reset_index()
         output_path = archivo_salida.replace('.nc', '.csv')  # Cambiar la extensión de .nc a .csv
         subset.to_csv(output_path, index=False)
-
-
-def calcular_estadisticas(data):
-    """
-    Calcula la media y la desviación estándar de los datos agrupados por mes.
-
-    Parámetros:
-    - data (xarray.DataArray): Datos a procesar.
-
-    Retorna:
-    - mean_tp (xarray.DataArray): Media mensual de los datos.
-    - std_tp (xarray.DataArray): Desviación estándar mensual de los datos.
-    """
-    mean_tp = data.groupby('time.month').mean(dim='time')  #calcula la media mensual
-    std_tp = data.groupby('time.month').std(dim='time')    #calcula la desviación estándar mensual
-    
-    return mean_tp, std_tp
 
 def guardar_estadisticas(data, archivo_salida, validador = None):
     """
@@ -87,6 +72,7 @@ def calcular_5_dias_maximo(data):
     - Rx5day (xarray.DataArray): Máximo acumulado de precipitación en 5 días consecutivos por mes.
     """
     # Sumar la precipitación en ventanas móviles de 5 días
+    pdb.set_trace()
     data_5_day_sum = data.rolling(time=5, min_periods=1).sum()
 
     # Agregar la columna de mes para verificar que los 5 días pertenezcan al mismo mes
@@ -103,6 +89,7 @@ def calcular_5_dias_maximo(data):
 
     # Seleccionar el máximo acumulado de 5 días dentro de cada mes
     Rx5day = data_5_day_sum.resample(time='1M').max()
+    pdb.set_trace()
 
     return Rx5day
 
@@ -123,6 +110,7 @@ def calcular_lluvia(data):
     mean_tp, std_tp = calcular_estadisticas(Rx5day)
 
     # Crear un dataset con la media y la desviación estándar
+    pdb.set_trace()
     p = xr.Dataset({
         'mean_tp': mean_tp['tp_daily_sum'],
         'std_tp': std_tp['tp_daily_sum']
@@ -229,14 +217,16 @@ def calcular_sequia(data):
 
     return d
 
-if __name__ == "__main__":
-
-    ruta = 'c:\\Users\\Usuario\\Downloads'
-    #datos para calcular la estadistica - ACTUALIZAR
-    archivo_union = ruta+'\\era5_daily_combined_rain.nc'
+def calcular_percentiles():
+    ruta = "../../data/processed"
+    file = 'era5_daily_combined_rain.nc'
+    archivo_union = os.path.join(ruta, file)
+    archivo_salida_lluvia = os.path.join(ruta, "era5_estadisticas_lluvia.nc")
+    archivo_salida_sequia = os.path.join(ruta, "era5_estadisticas_sequia.nc")
 
     #calcular la lluvia
     tp_daily = xr.open_dataset(archivo_union)
+    pdb.set_trace()
 
     #ordenar_dataset
     tp_daily = tp_daily.sortby('time')
@@ -249,5 +239,8 @@ if __name__ == "__main__":
     d = calcular_sequia(tp_filtered) #sequia
 
     #guardar estadisticas - ACTUALIZAR
-    guardar_estadisticas(p,ruta+'\\estadisticas_lluvia.nc')
-    guardar_estadisticas(d,ruta+'\\estadisticas_sequia.nc')
+    guardar_estadisticas(p, archivo_salida_lluvia)
+    guardar_estadisticas(d, archivo_salida_sequia)
+
+if __name__ == "__main__":
+    calcular_percentiles()

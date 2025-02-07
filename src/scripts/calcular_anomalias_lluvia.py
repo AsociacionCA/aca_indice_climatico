@@ -156,7 +156,7 @@ def count_most_frequent_with_condition(data):
     
 def calcular_interpolacion(data, aux_year):
     
-    ruta = 'c:\\Users\\Usuario\\Downloads'
+    ruta = "../../data/processed"
 
     data = data.where(data < 0.001, other=1)
     data = data.where(data >= 0.001, other=0)
@@ -186,7 +186,7 @@ def calcular_interpolacion(data, aux_year):
     else:
         aux_year -= 1
         data1 = count_most_frequent_da
-        data2 = xr.open_dataarray(ruta+f'datos_maximos_{aux_year}.nc')
+        data2 = xr.open_dataarray(ruta + '/' +f'datos_maximos_{aux_year}.nc')
         aux_year += 1
         
         data_aligned = data2.sel(latitude=data1.latitude, longitude=data1.longitude, method="nearest")
@@ -208,7 +208,7 @@ def calcular_interpolacion(data, aux_year):
         CDD = data1['new']
 
 
-    CDD.sel(month=12).to_netcdf(ruta+f'datos_maximos_{aux_year}.nc')
+    CDD.sel(month=12).to_netcdf(ruta+'/'+ f'datos_maximos_{aux_year}.nc')
     
     new_date = pd.to_datetime(
     dict(year=aux_year, month=CDD['month'].values, day=1))
@@ -275,14 +275,15 @@ def procesar_anomalias(est1, est2, file, shapefile, year):
     return anomalias_lluvia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"]), anomalias_sequia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
 
 def ejecutar_codigo(shapefile):
-    ruta = 'c:\\Users\\Usuario\\Downloads'
+    ruta = "../../data/processed"
+    ruta_grib = "../../data/raw/era5"
     
     df1 = []
     df2 = []
 
-    for year in range(1961, 1970):
+    for year in range(1961, 2025):
         # Procesar anomalías
-        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(ruta + '\\estadisticas_lluvia.nc',ruta + '\\estadisticas_sequia.nc', ruta + f'\\era5_rain_{year}.grib', shapefile, year)
+        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(ruta + '/'+'era5_estadisticas_lluvia.nc',ruta +'/'+ 'era5_estadisticas_sequia.nc', ruta_grib +'/' + f'era5_rain_{year}.grib', shapefile, year)
 
         for mes in range(1, 13):
             try:
@@ -294,22 +295,24 @@ def ejecutar_codigo(shapefile):
 
             except KeyError as e:
                 print(f"Error con el mes {mes} para el año {year}: {e}")
+        print(f'Procesado year {year}')
 
     # Convertir a DataFrame
     df_lluvia = pd.DataFrame(df1)
     df_sequia = pd.DataFrame(df2)
 
     # Guardar en CSV
-    df_lluvia.to_csv(ruta + "\\anomalies_precipitation_combined.csv", index=False)
-    df_sequia.to_csv(ruta + "\\anomalies_drought_combined.csv", index=False)
+    df_lluvia.to_csv(ruta +'/'+ "anomalies_precipitation_combined.csv", index=False)
+    df_sequia.to_csv(ruta +'/'+ "anomalies_drought_combined.csv", index=False)
 
     return df_lluvia, df_sequia
 
 if __name__ == "__main__":
 
-    ruta = 'c:\\Users\\Usuario\\Downloads'
+    shapefile_path = "../../data/shapefiles/colombia_4326.shp"
 
     #cargar los datos
-    shapefile = gpd.read_file(ruta+"\\colombia_4326.shp")
+    shapefile = gpd.read_file(shapefile_path)
 
     df1, df2 = ejecutar_codigo(shapefile)
+    print('Proceso finalizad')

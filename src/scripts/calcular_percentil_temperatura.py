@@ -50,15 +50,15 @@ def calcular_percentiles(archivo_entrada, variable = 't2m'):
     
     # Maximum temperature
     ## Temperatures above the 90th percentile (These are from our interest)
-    exceed_90_max = daily_data['daily_max'].groupby("time.month") > percentiles_max.sel(quantile=0.9)
+    exceed_90_max = (daily_data['daily_max'].groupby("time.month") > percentiles_max.sel(quantile=0.9)).astype(int)
     ## Temperatures below the 10th percentile
-    below_10_max = daily_data['daily_max'].groupby("time.month") < percentiles_max.sel(quantile=0.1)
+    below_10_max = (daily_data['daily_max'].groupby("time.month") < percentiles_max.sel(quantile=0.1)).astype(int)
     
     # Minimum temperature
     ## Temperatures above the 90th percentile
-    exceed_90_min = daily_data['daily_min'].groupby("time.month") > percentiles_min.sel(quantile=0.9)
+    exceed_90_min = (daily_data['daily_min'].groupby("time.month") > percentiles_min.sel(quantile=0.9)).astype(int)
     ## Temperatures below the 10th percentile (These are from our interest)
-    below_10_min = daily_data['daily_min'].groupby("time.month") < percentiles_min.sel(quantile=0.1)
+    below_10_min = (daily_data['daily_min'].groupby("time.month") < percentiles_min.sel(quantile=0.1)).astype(int)
 
     # Promedio de los valores máximos y mínimos
     valores_max = (exceed_90_max + exceed_90_min)/2
@@ -71,8 +71,6 @@ def calcular_percentiles(archivo_entrada, variable = 't2m'):
     below_10_min_y_m = valores_min.groupby(["time.year", "time.month"]).mean(dim="time")
     mean_min = below_10_min_y_m.groupby("month").mean(dim="year")
     std_dev_min = below_10_min_y_m.groupby("month").std(dim="year")
-
-
     
     # Combine all statistics into a single dataset
     estadisticas = xr.Dataset({
