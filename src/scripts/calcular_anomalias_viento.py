@@ -24,7 +24,7 @@ def calculos_componente_viento(archivo_percentiles, archivo_comparar, year, mont
     ds["wind_power"] = (p* (ds["wind_speed"]**3))/2 
         
     percentiles=load_percentiles(archivo_percentiles, month, shapefile_path)
-    count_above = compute_occurrences(ds['wind_power'], percentiles['percentil_90'])
+    count_above = compute_occurrences(ds['wind_power'], percentiles['threshold'])
 
     # Calcular anomalias
     anomalies = calculate_anomalies(count_above, percentiles['mean_exceeding'], percentiles['std_exceeding'])

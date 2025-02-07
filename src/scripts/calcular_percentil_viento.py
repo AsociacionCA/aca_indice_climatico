@@ -20,8 +20,16 @@ def calcular_percentiles_viento(archivo_entrada):
     p= 1.23  #constante de la densidad del aire (kg/m3)
     ds["wind_power"]= (p* (ds["wind_speed"]**3))/2 
     
+    # Threshold
+    # mean
+    promedio_wind_power = ds['wind_power'].groupby("time.month").mean(dim="time")
+    # std
+    std_wind_power = ds['wind_power'].groupby("time.month").std(dim="time")
+    # threshold
+    threshold = promedio_wind_power + (1.28 * std_wind_power)
+
     percentiles_max = ds['wind_power'].groupby("time.month").quantile(0.9, dim="time")
-    exceeding_values = ds['wind_power'].groupby("time.month") > percentiles_max
+    exceeding_values = ds['wind_power'].groupby("time.month") > threshold
 
     # Calcular la media y la desviación estándar por mes de los valores que exceden el umbral de 90 
     exceed_90_max_y_m = exceeding_values.groupby(["time.year", "time.month"]).mean(dim="time")
@@ -32,9 +40,9 @@ def calcular_percentiles_viento(archivo_entrada):
         'percentil_90': percentiles_max,
         'mean_exceeding': mean_exceeding,
         'std_exceeding': std_exceeding,
+        'threshold': threshold
     })
     
-    pdb.set_trace()
     return estadisticas
      
 
