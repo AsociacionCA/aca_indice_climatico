@@ -145,3 +145,113 @@ for estacion, df in dataframes.items():
         print("\n Solo método no paramétrico (datos no normales)")
     
     print("-" * 50)
+
+
+dataframes_filtrados = dataframes.copy()
+
+# Filtros temporales para Cartagena y Buenaventura
+if 'Cartagena' in dataframes_filtrados:
+    df_cartagena = dataframes_filtrados['Cartagena']
+    mask = (df_cartagena['Date'].dt.year >= 1973) & (df_cartagena['Date'].dt.year <= 1992)
+    dataframes_filtrados['Cartagena'] = df_cartagena[mask]
+
+if 'Buenaventura' in dataframes_filtrados:
+    df_buenaventura = dataframes_filtrados['Buenaventura']
+    mask = (df_buenaventura['Date'].dt.year >= 1975) & (df_buenaventura['Date'].dt.year <= 1992)
+    dataframes_filtrados['Buenaventura'] = df_buenaventura[mask]
+
+# Eliminar únicamente Tumaco
+dataframes_filtrados.pop('Tumaco', None)
+
+
+#graficar 
+plt.figure(figsize=(14, 7))
+colores = {
+    'Cartagena': '#1f77b4', 
+    'Buenaventura': '#ff7f0e',
+    'Riohacha': '#2ca02c',
+    'San Andres': '#d62728'
+}
+
+for estacion, df in dataframes_filtrados.items():
+    # Gráfico principal
+    plt.plot(df['Date'], df['Value_mm'], 
+             color=colores.get(estacion, '#7f7f7f'),
+             linewidth=1.5, 
+             alpha=0.7,
+             label=f'{estacion} (Datos originales)')
+    
+    # Tendencia polinómica
+    if len(df) > 2:
+        x = df['Date'].map(pd.Timestamp.toordinal)
+        coef = np.polyfit(x, df['Value_mm'], 1)
+        tendencia = np.poly1d(coef)(x)
+        plt.plot(df['Date'], tendencia, 
+                 color=colores.get(estacion, '#7f7f7f'), 
+                 linestyle='--',
+                 linewidth=2,
+                 label=f'Tendencia {estacion}')
+
+plt.title('Análisis Comparativo del Nivel del Mar (1973-1995)', fontsize=14)
+plt.xlabel('Año', fontsize=12)
+plt.ylabel('Altura (mm)', fontsize=12)
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(alpha=0.3)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Celda 13 modificada: Análisis extendido
+print("\n📊 Análisis Detallado por Estación:")
+for estacion, df in dataframes_filtrados.items():
+    print(f"\n🔍 {estacion} ({df['Date'].min().year}-{df['Date'].max().year})")
+    
+    # Estadísticas descriptivas
+    desc = df['Value_mm'].describe(percentiles=[0.25, 0.75])
+    print(f"\nEstadísticas descriptivas:\n{desc.round(2)}")
+    
+    # Análisis de tendencia
+    mk_result = mk.original_test(df['Value_mm'])
+    print(f"\nPrueba Mann-Kendall:")
+    print(f"- Tendencia: {mk_result.trend}")
+    print(f"- Tau: {mk_result.Tau:.3f}")
+    print(f"- p-valor: {mk_result.p:.4f}")
+    
+    # Cambio absoluto estimado
+    años = df['Date'].dt.year.max() - df['Date'].dt.year.min()
+    pendiente = mk_result.slope * 365  # mm/año
+    cambio_total = pendiente * años
+    print(f"\nCambio estimado ({años} años): {cambio_total:.1f} mm")
+
+    # Celda 15: Análisis de normalidad en residuos de regresión
+from statsmodels.graphics.gofplots import qqplot
+from scipy.stats import normaltest
+
+print("\n🔍 Validación de supuestos para regresión lineal:")
+
+for estacion, df in dataframes_filtrados.items():
+    print(f"\n📍 {estacion}")
+    
+    # 1. Ajustar modelo lineal
+    x = df['Date'].map(pd.Timestamp.toordinal).values
+    y = df['Value_mm'].values
+    slope, intercept, r_value, p_value, _ = linregress(x, y)
+    
+    # 2. Calcular residuos
+    residuos = y - (slope*x + intercept)
+    
+    # 3. Prueba de normalidad en residuos (D'Agostino-Pearson)
+    stat, p = normaltest(residuos)
+    normalidad = p > 0.05
+    
+    # 4. Resultados
+    print(f"- Pendiente: {slope*365:.2f} mm/año (p = {p_value:.4f})")
+    print(f"- Normalidad residuos: {'Sí' if normalidad else 'No'} (p = {p:.4f})")
+    
+    # 5. Gráfico Q-Q de residuos
+    plt.figure(figsize=(8,4))
+    qqplot(residuos, line='s', ax=plt.gca())
+    plt.title(f'Q-Q Plot Residuos: {estacion}')
+    plt.show()
+
+
