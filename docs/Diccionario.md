@@ -2207,6 +2207,118 @@ La entidad es la UNESCO junto con la Intergovernmental Oceanographic Commission.
 ### **7. Usabilidad**
 Si sería necesario adaptarlos, y sería fácil integrarlos con otras fuentes, dependiendo de como se desarrolle el proyecto. Para resolver problemas técnicos, por correo a la entidad.
 
+---
+
+# **PSMSL**
+
+A continuación, se detallan las respuestas sobre la disponibilidad y acceso a los datos en cada una de las estaciones, con base en la selección de la **PSMSL** como fuente de información para el nivel del mar.
+
+## **1. Disponibilidad y Acceso por Estación**
+
+### **Estación: PSMSL (Nivel del Mar)**
+
+- **¿Tiene información de lluvias (precipitación), fuertes lluvias?**  
+   No. La PSMSL solo proporciona datos de nivel del mar.  
+
+- **¿Tiene información de vientos, velocidad del viento, ráfagas de viento?**  
+   No. La PSMSL no recopila datos de viento.  
+
+- **¿Tiene información de temperaturas máximas, mínimas, promedio, datos de temperatura horaria?**  
+   No. Solo se enfoca en datos de nivel del mar.  
+
+- **¿Tiene acceso libre?**  
+   Sí.  
+
+- **¿Desde cuándo hay datos?**  
+   La PSMSL tiene registros históricos desde principios del siglo XX hasta la actualidad, dependiendo de la estación.  
+
+- **¿Necesitamos un permiso especial?**  
+   No.  
+
+- **¿Cómo se puede acceder a los datos?**  
+   A través del portal oficial de la PSMSL: [https://www.psmsl.org/](https://www.psmsl.org/)  
+
+- **¿Podemos crear una automatización para la descarga de los datos?**  
+  Sí, los datos pueden descargarse automáticamente mediante scripts en Python o R.  
+
+- **¿Cuál es la frecuencia de actualización de los datos?**  
+  La actualización depende de la estación, generalmente mensual o anual.  
+
+- **¿En qué formato están disponibles los datos?**  
+  CSV y TXT.  
+
+- **¿Existen restricciones geográficas en el acceso?**  
+  No, la información es pública y global.  
+
+## **2. Calidad y Estandarización**
+
+- **¿Qué nivel de resolución espacial tienen los datos?**  
+  Depende de la estación, generalmente datos de nivel del mar en puntos específicos.  
+
+- **¿Qué nivel de resolución temporal tienen los datos?**  
+  Mensual o anual.  
+
+- **¿Los datos han sido sometidos a algún proceso de limpieza o validación?**  
+  Sí, la PSMSL realiza controles de calidad en los datos.  
+
+- **¿Incluyen metadatos detallados y consistentes?**  
+  Sí, cada estación tiene metadatos específicos disponibles.  
+
+## **3. Contenido de los Datos**
+
+- **¿Qué variables están disponibles (temperatura, precipitación, viento, etc.)?**  
+  Solo nivel del mar.  
+
+- **¿Los datos incluyen mediciones históricas, simulaciones o ambos?**  
+  Solo mediciones históricas.  
+
+- **¿Existen variables derivadas (índices climáticos, anomalías, etc.)?**  
+  Sí, algunos análisis incluyen anomalías del nivel del mar.  
+
+## **4. Uso y Licencia**
+
+- **¿Qué tipo de licencia tienen los datos (libre, restringida, comercial)?**  
+  Libre y de acceso público.  
+
+- **¿Existe un límite en la cantidad de datos que se pueden descargar?**  
+  No.  
+
+- **¿Se requiere atribuir la fuente en caso de uso?**  
+  Sí, se recomienda citar la PSMSL.  
+
+- **¿Es posible redistribuir los datos o integrarlos en nuevos productos?**  
+  Sí, con la debida atribución.  
+
+## **5. Automatización y Escalabilidad**
+
+- **¿Los datos están disponibles a través de APIs?**  
+  No, pero se pueden descargar automáticamente desde su portal.  
+
+- **¿Existen restricciones en la velocidad o volumen de solicitudes para la descarga automatizada?**  
+  No.  
+
+- **¿Qué herramientas o lenguajes son compatibles con el acceso a los datos (Python, R, etc.)?**  
+  Python, R, y cualquier lenguaje que pueda leer CSV o TXT.  
+
+## **6. Contexto y la Institución**
+
+- **¿Quién es la entidad responsable de los datos?**  
+  PSMSL (Permanent Service for Mean Sea Level).  
+
+- **¿Cuál es la reputación de la fuente en términos de calidad y fiabilidad?**  
+  Alta, es una de las principales referencias en nivel del mar.  
+
+- **¿Hay documentación técnica detallada para entender los datos?**  
+  Sí, disponible en su sitio web.  
+
+## **7. Usabilidad**
+
+- **¿Es necesario transformar los datos para adaptarlos a los objetivos del proyecto?**  
+  Depende del uso, pueden requerir normalización o filtrado.  
+
+- **¿Qué tan fácil es integrar los datos con otras fuentes?**  
+  Relativamente fácil, ya que están en formatos estándar.  
+
 
 
 ______________________________________
