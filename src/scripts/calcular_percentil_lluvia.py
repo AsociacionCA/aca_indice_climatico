@@ -31,6 +31,10 @@ def guardar_estadisticas(data, archivo_salida, validador = None):
     - archivo_salida (str): Nombre del archivo de salida.
 
     """
+    # Check if file exists and delete it
+    if os.path.exists(archivo_salida):
+        os.remove(archivo_salida)
+
     #guardar en formato NetCDF
     data.to_netcdf(archivo_salida)
 

@@ -84,7 +84,8 @@ def procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, ou
                     year=year,
                     month=month,
                     salida_anomalias=f"../../data/processed/anomalies_wind_{year}_{month}.nc",
-                    shapefile_path=shapefile_path
+                    shapefile_path=shapefile_path,
+                    save_netcdf=True
                 )
                 ds_month = ds_month.assign_coords(year=year)
                 all_anomalies.append(ds_month)

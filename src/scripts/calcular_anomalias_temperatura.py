@@ -124,7 +124,6 @@ def calcular_anomalias(archivo_percentiles, archivo_comparar, year, month, salid
     anomalies_below_min = calculate_anomalies(valores_min_mensuales, month_percentiles['mean_min'], month_percentiles['std_dev_min'])
 
     ### Calcular los porcentajes
-    pdb.set_trace()
     # Drop unnecessary coordinates
     variables_to_drop = [count_above_90_max, count_below_10_max, count_above_90_min, count_below_10_min,
                          anomalies_above_max, anomalies_below_min]
