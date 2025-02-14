@@ -17,7 +17,6 @@ def calcular_estadisticas(data):
     - mean_tp (xarray.DataArray): Media mensual de los datos.
     - std_tp (xarray.DataArray): Desviación estándar mensual de los datos.
     """
-    pdb.set_trace()
     mean_tp = data.groupby('time.month').mean(dim='time')  #calcula la media mensual
     std_tp = data.groupby('time.month').std(dim='time')    #calcula la desviación estándar mensual
     
@@ -72,7 +71,6 @@ def calcular_5_dias_maximo(data):
     - Rx5day (xarray.DataArray): Máximo acumulado de precipitación en 5 días consecutivos por mes.
     """
     # Sumar la precipitación en ventanas móviles de 5 días
-    pdb.set_trace()
     data_5_day_sum = data.rolling(time=5, min_periods=1).sum()
 
     # Agregar la columna de mes para verificar que los 5 días pertenezcan al mismo mes
@@ -89,7 +87,6 @@ def calcular_5_dias_maximo(data):
 
     # Seleccionar el máximo acumulado de 5 días dentro de cada mes
     Rx5day = data_5_day_sum.resample(time='1M').max()
-    pdb.set_trace()
 
     return Rx5day
 
@@ -110,7 +107,6 @@ def calcular_lluvia(data):
     mean_tp, std_tp = calcular_estadisticas(Rx5day)
 
     # Crear un dataset con la media y la desviación estándar
-    pdb.set_trace()
     p = xr.Dataset({
         'mean_tp': mean_tp['tp_daily_sum'],
         'std_tp': std_tp['tp_daily_sum']
@@ -123,7 +119,7 @@ def count_most_frequent_with_condition(data):
     """
     Encuentra la frecuencia máxima de los valores en el array y ajusta según la condición:
     - Si el valor `0` está presente en los datos, devuelve la frecuencia máxima.
-    - Si `0` no está presente, resta 1 a la frecuencia máxima.
+    - Si `0` no está presente, resta 1 a la frecuencia máxima, ya que el primer día es seco pero en la BD se marca como 1.
 
     Parámetros:
     - data (numpy array): Datos de entrada.
@@ -226,7 +222,6 @@ def calcular_percentiles():
 
     #calcular la lluvia
     tp_daily = xr.open_dataset(archivo_union)
-    pdb.set_trace()
 
     #ordenar_dataset
     tp_daily = tp_daily.sortby('time')

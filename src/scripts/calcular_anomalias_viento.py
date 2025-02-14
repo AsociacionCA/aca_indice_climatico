@@ -37,7 +37,7 @@ def calculos_componente_viento(archivo_percentiles, archivo_comparar, year, mont
     
     # Guardar el Dataset en un archivo NetCDF
     if save_netcdf:
-        anomalies.to_netcdf(f"../../data/processed/anomalies_wind_{year}_{month}.nc")
+        anomalies.to_netcdf(salida_anomalias)
     return anomalies.mean(dim=['latitude', 'longitude'], keep_attrs=True)
    
 
@@ -93,7 +93,10 @@ def procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, ou
                 continue
 
     # Combine all monthly datasets into one
-    combined_anomalies = xr.concat(all_anomalies, dim='time')
+    if all_anomalies:
+        combined_anomalies = xr.concat(all_anomalies, dim='time')
+    else:
+        print("No anomalies were calculated")
 
     # Convert the xarray.Dataset to a pandas.DataFrame
     anomalies_df = combined_anomalies.to_dataframe().reset_index()
