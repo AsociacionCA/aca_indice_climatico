@@ -4,6 +4,7 @@ import os
 import numpy as np
 import rioxarray as rio
 import geopandas as gpd
+import pdb
 
 def load_grid_data(file_path, variable, shapefile):
     """
@@ -271,8 +272,10 @@ def procesar_anomalias(est1, est2, file, shapefile, year):
     anomalias_lluvia = calcular_anomalias_lluvia(ds_resampled, estadisticas1)
     anomalias_sequia = calcular_anomalias_sequia(ds_resampled, estadisticas2, year)
 
+    anomalias_lluvias_resultado = anomalias_lluvia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
+    anomalias_sequia_resultado = anomalias_sequia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
 
-    return anomalias_lluvia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"]), anomalias_sequia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
+    return anomalias_lluvias_resultado, anomalias_sequia_resultado
 
 def ejecutar_codigo(shapefile):
     ruta = "../../data/processed"
