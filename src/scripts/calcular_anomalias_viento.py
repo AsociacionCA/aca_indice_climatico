@@ -41,9 +41,10 @@ def calculos_componente_viento(archivo_percentiles, archivo_comparar, year, mont
     return anomalies.mean(dim=['latitude', 'longitude'], keep_attrs=True)
    
 
-def procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path):
+def procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path, output_netcdf):
     # List all files in the directory
     files = os.listdir(archivo_comparar_location)
+    
 
     # Initialize an empty list to store monthly datasets
     all_anomalies = []
@@ -83,7 +84,7 @@ def procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, ou
                     archivo_comparar=archivo_comparar,
                     year=year,
                     month=month,
-                    salida_anomalias=f"../../data/processed/anomalies_wind_{year}_{month}.nc",
+                    salida_anomalias= os.path.join(output_netcdf, f"anomalies_wind_{year}_{month}.nc"),
                     shapefile_path=shapefile_path,
                     save_netcdf=True
                 )
@@ -111,5 +112,6 @@ if __name__ == "__main__":
     archivo_comparar_location = "../../data/raw/era5/"
     output_csv_path = "../../data/processed/anomalies_wind_combined.csv"
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
+    output_netcdf = "../../data/processed"
 
-    procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path)
+    procesar_anomalias_viento(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path, output_netcdf)

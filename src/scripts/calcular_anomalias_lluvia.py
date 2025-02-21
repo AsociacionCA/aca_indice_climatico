@@ -155,9 +155,9 @@ def count_most_frequent_with_condition(data):
     return counts.max() - 1
     
     
-def calcular_interpolacion(data, aux_year):
+def calcular_interpolacion(data, aux_year, ruta_salida):
     
-    ruta = "../../data/processed"
+    ruta = ruta_salida
 
     data = data.where(data < 0.001, other=1)
     data = data.where(data >= 0.001, other=0)
@@ -223,7 +223,7 @@ def calcular_interpolacion(data, aux_year):
 
     return CDD
 
-def calcular_anomalias_sequia(data, p, year):
+def calcular_anomalias_sequia(data, p, year, ruta_salida):
     """
     Calcula las anomalías de sequía con base en la duración de días secos consecutivos.
 
@@ -235,7 +235,7 @@ def calcular_anomalias_sequia(data, p, year):
     - anomalias_sequia (xarray.Dataset): Anomalías de sequía.
     """
     # Obtener la serie interpolada de días secos consecutivos
-    CDD = calcular_interpolacion(data, year)
+    CDD = calcular_interpolacion(data, year, ruta_salida)
 
     # Alinear los datos con las estadísticas de referencia
     CDD = alinear_data(CDD, p, 0)
@@ -256,7 +256,7 @@ def load_estadisticas(estadisticas_file, shapefile_path):
 
     return estadisticas_data
 
-def procesar_anomalias(est1, est2, file, shapefile, year):
+def procesar_anomalias(est1, est2, file, shapefile, year, ruta_salida):
     
     estadisticas1 = load_estadisticas(est1, shapefile)
     estadisticas2 = load_estadisticas(est2, shapefile)
@@ -270,23 +270,23 @@ def procesar_anomalias(est1, est2, file, shapefile, year):
 
     #calcular anomalias para esos años
     anomalias_lluvia = calcular_anomalias_lluvia(ds_resampled, estadisticas1)
-    anomalias_sequia = calcular_anomalias_sequia(ds_resampled, estadisticas2, year)
+    anomalias_sequia = calcular_anomalias_sequia(ds_resampled, estadisticas2, year, ruta_salida)
 
     anomalias_lluvias_resultado = anomalias_lluvia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
     anomalias_sequia_resultado = anomalias_sequia['anomalias'].groupby("time.month").mean(dim=["latitude", "longitude"])
 
     return anomalias_lluvias_resultado, anomalias_sequia_resultado
 
-def ejecutar_codigo(shapefile):
-    ruta = "../../data/processed"
-    ruta_grib = "../../data/raw/era5"
+def ejecutar_codigo(shapefile_path, ruta, ruta_grib, ruta_salida):
+
+    shapefile = gpd.read_file(shapefile_path)
     
     df1 = []
     df2 = []
 
     for year in range(1961, 2025):
         # Procesar anomalías
-        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(ruta + '/'+'era5_estadisticas_lluvia.nc',ruta +'/'+ 'era5_estadisticas_sequia.nc', ruta_grib +'/' + f'era5_rain_{year}.grib', shapefile, year)
+        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(ruta + '/'+'era5_lluvias_percentil.nc',ruta +'/'+ 'era5_sequia_percentil.nc', ruta_grib +'/' + f'era5_rain_{year}.grib', shapefile, year, ruta_salida)
 
         for mes in range(1, 13):
             try:
@@ -313,9 +313,10 @@ def ejecutar_codigo(shapefile):
 if __name__ == "__main__":
 
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
+    ruta = "../../data/processed"
+    ruta_grib = "../../data/raw/era5"
+    ruta_salida = "../../data/processed"
 
-    #cargar los datos
-    shapefile = gpd.read_file(shapefile_path)
 
-    df1, df2 = ejecutar_codigo(shapefile)
+    df1, df2 = ejecutar_codigo(shapefile_path, ruta, ruta_grib, ruta_salida)
     print('Proceso finalizad')
