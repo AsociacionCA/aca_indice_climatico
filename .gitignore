@@ -25,3 +25,6 @@ src/scripts/*/__pycache__/
 
 # Ignorar los archivos temporales de excel
 *.~*
+
+# Ignorar los shapefiles
+data/shapefiles/*

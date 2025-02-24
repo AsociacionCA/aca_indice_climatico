@@ -125,18 +125,13 @@ def calcular_anomalias(archivo_percentiles, archivo_comparar, year, month, salid
 
     ### Calcular los porcentajes
     # Drop unnecessary coordinates
-    variables_to_drop = [count_above_90_max, count_below_10_max, count_above_90_min, count_below_10_min,
-                         anomalies_above_max, anomalies_below_min]
+    variables_to_drop = [anomalies_above_max, anomalies_below_min]
     variables_dropped = drop_unnecessary_coords(variables_to_drop, 'quantile')
 
     # Create anomalies dataset
     anomalies = create_anomalies_dataset({
-        'count_above_90_max': variables_dropped[0],
-        'count_below_10_max': variables_dropped[1],
-        'count_above_90_min': variables_dropped[2],
-        'count_below_10_min': variables_dropped[3],
-        't_90': variables_dropped[4],
-        't_10': variables_dropped[5]
+        't_90': variables_dropped[0],
+        't_10': variables_dropped[1]
     }, attrs={'description': 'Anomalies and counts of temperature extremes'})
 
     # Save the dataset
@@ -144,7 +139,7 @@ def calcular_anomalias(archivo_percentiles, archivo_comparar, year, month, salid
 
     return anomalies.mean(dim=['latitude', 'longitude'], keep_attrs=True)
 
-def procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path):
+def procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path, output_netcdf):
     # List all files in the directory
     files = os.listdir(archivo_comparar_location)
 
@@ -186,7 +181,7 @@ def procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_locatio
                     archivo_comparar=archivo_comparar,
                     year=year,
                     month=month,
-                    salida_anomalias=f"../../data/processed/anomalies_temperature_{year}_{month}.nc",
+                    salida_anomalias= os.path.join(output_netcdf, f"anomalies_temperature_{year}_{month}.nc"),
                     shapefile_path=shapefile_path
                 )
                 ds_month = ds_month.assign_coords(year=year)
@@ -210,5 +205,6 @@ if __name__ == "__main__":
     archivo_comparar_location = "../../data/raw/era5/"
     output_csv_path = "../../data/processed/anomalies_temperature_combined.csv"
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
+    output_netcdf = "../../data/processed"
 
-    procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path)
+    procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path, output_netcdf)
