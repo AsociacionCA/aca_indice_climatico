@@ -277,46 +277,55 @@ def procesar_anomalias(est1, est2, file, shapefile, year, ruta_salida):
 
     return anomalias_lluvias_resultado, anomalias_sequia_resultado
 
-def ejecutar_codigo(shapefile_path, ruta, ruta_grib, ruta_salida):
+def guardar_anomalias(df_lluvia, df_sequia, ruta_salida, salida_lluvia, salida_sequia):
+    df_lluvia = pd.DataFrame(df_lluvia)
+    df_sequia = pd.DataFrame(df_sequia)
 
+    df_lluvia.to_csv(f"{ruta_salida}/{salida_lluvia}", index=False)
+    df_sequia.to_csv(f"{ruta_salida}/{salida_sequia}", index=False)
+
+def procesar_anomalias_lluvia(shapefile_path, ruta, ruta_grib, ruta_salida, salida_lluvia="anomalies_precipitation_combined.csv", salida_sequia="anomalies_drought_combined.csv"):
     shapefile = gpd.read_file(shapefile_path)
     
-    df1 = []
-    df2 = []
+    df_lluvia = []
+    df_sequia = []
 
     for year in range(1961, 2025):
         # Procesar anomalías
-        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(ruta + '/'+'era5_lluvias_percentil.nc',ruta +'/'+ 'era5_sequia_percentil.nc', ruta_grib +'/' + f'era5_rain_{year}.grib', shapefile, year, ruta_salida)
+        anomalias_mensuales_lluvia, anomalias_mensuales_sequia = procesar_anomalias(
+            f"{ruta}/era5_lluvias_percentil.nc",
+            f"{ruta}/era5_sequia_percentil.nc",
+            f"{ruta_grib}/era5_rain_{year}.grib",
+            shapefile,
+            year,
+            ruta_salida
+        )
 
         for mes in range(1, 13):
             try:
                 anomalia_lluvia_mes = anomalias_mensuales_lluvia.sel(time=anomalias_mensuales_lluvia.time.dt.month == mes, method="nearest").item()
-                df1.append({"Año": year, "Mes": mes, "Anomalia_Lluvia": anomalia_lluvia_mes})
+                df_lluvia.append({"Año": year, "Mes": mes, "Anomalia_Lluvia": anomalia_lluvia_mes})
                 
                 anomalia_sequia_mes = anomalias_mensuales_sequia.sel(time=anomalias_mensuales_sequia.time.dt.month == mes, method="nearest").item()
-                df2.append({"Año": year, "Mes": mes, "Anomalia_Sequia": anomalia_sequia_mes})
+                df_sequia.append({"Año": year, "Mes": mes, "Anomalia_Sequia": anomalia_sequia_mes})
 
             except KeyError as e:
                 print(f"Error con el mes {mes} para el año {year}: {e}")
         print(f'Procesado year {year}')
 
-    # Convertir a DataFrame
-    df_lluvia = pd.DataFrame(df1)
-    df_sequia = pd.DataFrame(df2)
-
-    # Guardar en CSV
-    df_lluvia.to_csv(ruta +'/'+ "anomalies_precipitation_combined.csv", index=False)
-    df_sequia.to_csv(ruta +'/'+ "anomalies_drought_combined.csv", index=False)
+    # Convertir a DataFrame y guardar en CSV
+    guardar_anomalias(df_lluvia, df_sequia, ruta_salida, salida_lluvia, salida_sequia)
 
     return df_lluvia, df_sequia
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
     ruta = "../../data/processed"
     ruta_grib = "../../data/raw/era5"
     ruta_salida = "../../data/processed"
+    salida_lluvia = "anomalies_precipitation_combined.csv"
+    salida_sequia = "anomalies_drought_combined.csv"
 
-
-    df1, df2 = ejecutar_codigo(shapefile_path, ruta, ruta_grib, ruta_salida)
-    print('Proceso finalizad')
+    df1, df2 = procesar_anomalias_lluvia(shapefile_path, ruta, ruta_grib, ruta_salida, salida_lluvia, salida_sequia)
+    print('Proceso finalizado')
