@@ -221,10 +221,10 @@ def plot_ICA(anomalies_combined_temp, anomalies_combined_rainfall, anomalies_com
 
 if __name__ == "__main__":
 
-    anomalies_combined_temp = "../../data/processed/anomalies_temperature_combined.csv"
-    anomalies_combined_rainfall = "../../data/processed/anomalies_precipitation_combined.csv"
-    anomalies_combined_drought = "../../data/processed/anomalies_drought_combined.csv"
-    anomalies_combined_wind = "../../data/processed/anomalies_wind_combined.csv"
+    anomalies_combined_temp = "../../data/processed/anomalias_colombia/anomalies_temperature_combined.csv"
+    anomalies_combined_rainfall = "../../data/processed/anomalias_colombia/anomalies_precipitation_combined.csv"
+    anomalies_combined_drought = "../../data/processed/anomalias_colombia/anomalies_drought_combined.csv"
+    anomalies_combined_wind = "../../data/processed/anomalias_colombia/anomalies_wind_combined.csv"
     output_dir = "../../articles/graficas"
 
     plot_temp_anomalies(anomalies_combined_temp,output_dir)
