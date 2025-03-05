@@ -27,6 +27,7 @@ pip install -r requirements.txt
 │
 ├── src/             # Código fuente y scripts
 │   ├── scripts/     # Scripts de procesamiento de datos
+│   ├── excel/       # Archivos de validación en Excel
 │
 ├── articles/        # Documentación y artículos científicos
 │
@@ -102,6 +103,17 @@ python src/scripts/calcular_anomalias_regiones.py
 ```
 
 **Nota:** Las áreas analizadas deben ser grandes (mínimo a nivel departamental), ya que áreas más pequeñas pueden no ser representativas.
+
+---
+
+## Archivos de Validación en Excel
+En la carpeta `src/excel/` se encuentran archivos de validación en Excel:
+
+- `precipitacion_sequial.xls`
+- `temperatura.xls`
+- `viento.xls`
+
+Estos archivos son un ejemplo práctico utilizado para validar el proceso y también pueden servir como referencia de la metodología aplicada.
 
 ---
 
