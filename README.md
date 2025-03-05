@@ -1,40 +1,127 @@
-## Descripción de la Estructura
+# Proyecto de Análisis de Datos Meteorológicos
 
-### `data/`
-Almacena todos los datos relacionados al proyecto. Separa los datos crudos (`raw`) de los procesados (`processed`).
+## Instalación de Librerías
 
-### `notebooks/`
-Contiene los Jupyter notebooks para explorar datos y documentar el flujo de trabajo.
+Para instalar las librerías necesarias, se recomienda crear un ambiente virtual con el siguiente comando:
 
-### `src/`
-Código fuente organizado en scripts y utilidades reutilizables.
+```bash
+python3 -m venv myenv
+```
 
-#### Descargar datos
-Para descargar los datos, se debe ejecutar el script `descargar_datos.py` que invoca la función `ecmwf_descarga.py` ubicado en la carpeta `src/scripts`. Este script descarga los datos de la página web del ECMWF y los almacena en la carpeta `data/raw/era5`.
+Luego, se deben instalar los paquetes requeridos ejecutando:
 
-#### Unir los datos
-Para unir los datos descargados, se debe ejecutar el script `unir_archivos.py` ubicado en la carpeta `src/scripts`. Este script une los datos descargados y los almacena en la carpeta `data/processed`.
+```bash
+pip install -r requirements.txt
+```
 
-#### Calcular los percentiles
-Para calcular los percentiles de los datos unidos, se debe ejecutar el script `calcular_percentil.py` ubicado en la carpeta `src/scripts`. Este script calcula los percentiles de los datos unidos y los almacena en la carpeta `data/processed`.
+---
 
-#### Calcular anomalías
-Para calcular las anomalías de los datos unidos, se debe ejecutar el script `calcular_anomalias.py` ubicado en la carpeta `src/scripts`. Este script calcula las anomalías de los datos unidos y los almacena en la carpeta `data/processed`.
+## Estructura del Proyecto
 
-### `docs/`
-Documentación importante del proyecto, como metodología y resultados.
+```
+├── data/
+│   ├── raw/         # Datos crudos descargados
+│   ├── processed/   # Datos procesados
+│
+├── notebooks/       # Jupyter notebooks para exploración de datos
+│
+├── src/             # Código fuente y scripts
+│   ├── scripts/     # Scripts de procesamiento de datos
+│   ├── excel/       # Archivos de validación en Excel
+│
+├── articles/        # Documentación y artículos científicos
+│
+├── README.md        # Instrucciones del proyecto
+├── requirements.txt # Dependencias del proyecto
+├── .gitignore       # Archivos a excluir en el repositorio
+├── LICENSE          # Licencia del proyecto
+```
 
-### `reports/`
-Reportes generados para socialización, gráficos y tablas.
+---
 
-### `tests/`
-Pruebas unitarias para verificar la funcionalidad del código.
+## Flujo de Trabajo
 
-### `articles/`
-Espacio para redactar artículos científicos o reportes.
+### 1. Descargar Datos
+Para descargar los datos, ejecutar:
 
-### Archivos raíz:
-- **`README.md`**: Instrucciones iniciales para desarrolladores y usuarios.
-- **`requirements.txt`**: Lista de dependencias del proyecto para instalación rápida.
-- **`.gitignore`**: Para evitar incluir archivos innecesarios en el repositorio.
-- **`LICENSE`**: Licencia que define cómo se puede usar el proyecto.
+```bash
+python src/scripts/descargar_datos.py
+```
+
+Este script invoca la función `ecmwf_descarga.py` y almacena los datos en `data/raw/era5`.
+
+### 2. Unir Datos
+Para unir los archivos descargados, ejecutar:
+
+```bash
+python src/scripts/unir_archivos.py
+```
+
+Los datos combinados se guardan en `data/processed`.
+
+### 3. Calcular Percentiles
+Para calcular los percentiles de temperatura, lluvia y viento, ejecutar:
+
+```bash
+python src/scripts/calcular_percentil_temperatura.py
+python src/scripts/calcular_percentil_lluvia.py
+python src/scripts/calcular_percentil_viento.py
+```
+
+Los resultados se almacenan en `data/processed`.
+
+### 4. Calcular Anomalías
+Para calcular anomalías en temperatura, lluvia y viento, ejecutar:
+
+```bash
+python src/scripts/calcular_anomalias_temperatura.py
+python src/scripts/calcular_anomalias_lluvia.py
+python src/scripts/calcular_anomalias_viento.py
+```
+
+Los resultados se guardan en `data/processed`.
+
+### 5. Generar Gráficas
+Para visualizar los resultados, ejecutar:
+
+```bash
+python src/scripts/graficas.py
+```
+
+### 6. Análisis del Nivel del Mar
+Dado que no se tenía información disponible, se utilizó `psmsl.org` y se creó un script exclusivo para su procesamiento:
+
+```bash
+python src/scripts/sealevel.py
+```
+
+### 7. Cálculo de Anomalías por Regiones
+Para calcular anomalías por regiones usando shapefiles, ejecutar:
+
+```bash
+python src/scripts/calcular_anomalias_regiones.py
+```
+
+**Nota:** Las áreas analizadas deben ser grandes (mínimo a nivel departamental), ya que áreas más pequeñas pueden no ser representativas.
+
+---
+
+## Archivos de Validación en Excel
+En la carpeta `src/excel/` se encuentran archivos de validación en Excel:
+
+- `precipitacion_sequial.xls`
+- `temperatura.xls`
+- `viento.xls`
+
+Estos archivos son un ejemplo práctico utilizado para validar el proceso y también pueden servir como referencia de la metodología aplicada.
+
+---
+
+## Diagrama del Proceso
+
+![Diagrama del proceso](https://github.com/user-attachments/assets/8e9416ea-6210-4be5-a6f1-3e51bf23282f)
+
+---
+
+## Licencia
+Este proyecto está bajo la licencia especificada en el archivo `LICENSE`.
