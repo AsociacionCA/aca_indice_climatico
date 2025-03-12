@@ -203,8 +203,8 @@ def procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_locatio
 if __name__ == "__main__":
     archivo_percentiles = "../../data/processed/era5_temperatura_percentil.nc"
     archivo_comparar_location = "../../data/raw/era5/"
-    output_csv_path = "../../data/processed/anomalies_temperature_combined.csv"
+    output_csv_path = "../../data/processed/anomalias_colombia/anomalies_temperature_combined.csv"
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
-    output_netcdf = "../../data/processed"
+    output_netcdf = "../../data/processed/anomalias_colombia"
 
     procesar_anomalias_temperatura(archivo_percentiles, archivo_comparar_location, output_csv_path, shapefile_path, output_netcdf)

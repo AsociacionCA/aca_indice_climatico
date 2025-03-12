@@ -35,22 +35,34 @@ if __name__ == "__main__":
     output_base_path = "../../data/processed"
 
     regiones = [
-        {"name": "cundinamarca", "shapefile": "../../data/shapefiles/Cundinamarca_Bogota_4326.shp"},
-        {"name": "antioquia", "shapefile": "../../data/shapefiles/antioquia_4326.shp"},
-        {"name": "valle_cauca", "shapefile": "../../data/shapefiles/valle_cauca_4326.shp"},
-        {"name": "san_andres_providencia", "shapefile": "../../data/shapefiles/san_andres_providencia.shp"},
-        {"name": "medellin", "shapefile": "../../data/shapefiles/medellin_4326.shp"},
-        {"name": "cali", "shapefile": "../../data/shapefiles/cali_4326.shp"},
-        {"name": "bogota", "shapefile": "../../data/shapefiles/bogota.shp"}
+        {"name": "anomalias_colombia", "shapefile": "../../data/shapefiles/colombia_4326.shp"},
+        {"name": "anomalias_cundinamarca_bogota", "shapefile": "../../data/shapefiles/Cundinamarca_Bogota_4326.shp"},
+        {"name": "anomalias_antioquia", "shapefile": "../../data/shapefiles/antioquia_4326.shp"},
+        {"name": "anomalias_valle_cauca", "shapefile": "../../data/shapefiles/valle_cauca_4326.shp"},
+        {"name": "anomalias_san_andres_providencia", "shapefile": "../../data/shapefiles/san_andres_providencia.shp"},
+        {"name": "anomalias_medellin", "shapefile": "../../data/shapefiles/medellin_4326.shp"},
+        {"name": "anomalias_cali", "shapefile": "../../data/shapefiles/cali_4326.shp"},
+        {"name": "anomalias_bogota", "shapefile": "../../data/shapefiles/bogota.shp"}
     ]
 
     for region in regiones:
-        procesar_anomalias_region(
-            region_name=region["name"],
-            shapefile_path=region["shapefile"],
-            archivo_comparar_location=archivo_comparar_location,
-            archivo_percentiles_temperatura=archivo_percentiles_temperatura,
-            archivo_percentiles_wind=archivo_percentiles_wind,
-            archivo_percentiles_lluvia=archivo_percentiles_lluvia,
-            output_base_path=output_base_path
-        )
+        try:
+            os.makedirs(os.path.join(output_base_path, region["name"]))
+        except FileExistsError:
+            pass
+
+        try:
+            procesar_anomalias_region(
+                region_name=region["name"],
+                shapefile_path=region["shapefile"],
+                archivo_comparar_location=archivo_comparar_location,
+                archivo_percentiles_temperatura=archivo_percentiles_temperatura,
+                archivo_percentiles_wind=archivo_percentiles_wind,
+                archivo_percentiles_lluvia=archivo_percentiles_lluvia,
+                output_base_path=output_base_path
+            )
+        except Exception as e:
+
+            print(f'Error en el proceso para {region["name"]}: {e}')
+            continue
+    print("Proceso finalizado")
