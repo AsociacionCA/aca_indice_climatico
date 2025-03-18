@@ -15,12 +15,12 @@ def plot_temp_anomalies(anomalies_combined,output_dir):
 
     df = df.sort_values(by='date')
 
-    df['T90_5yr_moving_avg'] = df['t_90'].rolling(window=60, center=True).mean()
-    df['T10_5yr_moving_avg'] = df['t_10'].rolling(window=60, center=True).mean()
+    df['T90_5yr_moving_avg'] = df['t_90'].rolling(window=60, center=False).mean()
+    df['T10_5yr_moving_avg'] = df['t_10'].rolling(window=60, center=False).mean()
 
     #Compound component of temperature
     df['composite'] = df['t_90'] - df['t_10']
-    df['composite_5yr_moving_avg'] = df['composite'].rolling(window=60, center=True).mean()
+    df['composite_5yr_moving_avg'] = df['composite'].rolling(window=60, center=False).mean()
 
     plt.figure(figsize=(15, 6)) #tamaño de la grafica
 
@@ -57,7 +57,7 @@ def plot_rainfall_anomalies(anomalies_combined,output_dir):
 
     df = df.sort_values(by='date')
 
-    df['rainfall_5yr_moving_avg'] = df['Anomalia_Lluvia'].rolling(window=60, center=True).mean()
+    df['rainfall_5yr_moving_avg'] = df['Anomalia_Lluvia'].rolling(window=60, center=False).mean()
 
     plt.figure(figsize=(15, 6)) #tamaño de la grafica
 
@@ -93,7 +93,7 @@ def plot_drought_anomalies(anomalies_combined,output_dir):
 
     df = df.sort_values(by='date')
 
-    df['rainfall_5yr_moving_avg'] = df['Anomalia_Sequia'].rolling(window=60, center=True).mean()
+    df['rainfall_5yr_moving_avg'] = df['Anomalia_Sequia'].rolling(window=60, center=False).mean()
 
     plt.figure(figsize=(15, 6)) #tamaño de la grafica
 
@@ -127,7 +127,7 @@ def plot_wind_anomalies(anomalies_combined,output_dir):
 
     df = df.sort_values(by='date')
 
-    df['5yr_moving_avg'] = df['anomalies_above'].rolling(window=60, center=True).mean()
+    df['5yr_moving_avg'] = df['anomalies_above'].rolling(window=60, center=False).mean()
 
     plt.figure(figsize=(15, 6)) #tamaño de la grafica
 
@@ -187,12 +187,12 @@ def plot_ICA(anomalies_combined_temp, anomalies_combined_rainfall, anomalies_com
     ICA['ICA'] = (ICA['t_90'] - ICA['t_10'] + ICA['W_std'] + ICA['P_std'] + ICA['D_std']) / 5
 
     # Calcular la media móvil de 5 años
-    ICA['ICA_5yr_avg'] = ICA['ICA'].rolling(window=60, center=True).mean()
-    ICA['t90_5yr_avg'] = ICA['t_90'].rolling(window=60, center=True).mean()
-    ICA['t10_5yr_avg'] = ICA['t_10'].rolling(window=60, center=True).mean()
-    ICA['W_std_5yr_avg'] = ICA['W_std'].rolling(window=60, center=True).mean()
-    ICA['P_std_5yr_avg'] = ICA['P_std'].rolling(window=60, center=True).mean()
-    ICA['D_std_5yr_avg'] = ICA['D_std'].rolling(window=60, center=True).mean()
+    ICA['ICA_5yr_avg'] = ICA['ICA'].rolling(window=60, center=False).mean()
+    ICA['t90_5yr_avg'] = ICA['t_90'].rolling(window=60, center=False).mean()
+    ICA['t10_5yr_avg'] = ICA['t_10'].rolling(window=60, center=False).mean()
+    ICA['W_std_5yr_avg'] = ICA['W_std'].rolling(window=60, center=False).mean()
+    ICA['P_std_5yr_avg'] = ICA['P_std'].rolling(window=60, center=False).mean()
+    ICA['D_std_5yr_avg'] = ICA['D_std'].rolling(window=60, center=False).mean()
 
     # Gráfico
     plt.figure(figsize=(15, 6))

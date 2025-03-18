@@ -323,7 +323,7 @@ if __name__ == "__main__":
     shapefile_path = "../../data/shapefiles/colombia_4326.shp"
     ruta = "../../data/processed"
     ruta_grib = "../../data/raw/era5"
-    ruta_salida = "../../data/processed"
+    ruta_salida = "../../data/processed/anomalias_colombia"
     salida_lluvia = "anomalies_precipitation_combined.csv"
     salida_sequia = "anomalies_drought_combined.csv"
 
